@@ -254,23 +254,25 @@ export default class Carousel extends React.Component {
           e.preventDefault();
         }
 
+        let deltaY = e.touches[0].pageY - this.touchObject.startY;
+        let deltaX = e.touches[0].pageX - this.touchObject.startX;
+        if (this.props.easeSwiping) {
+          if (Math.abs(deltaX) >= Math.abs(deltaY)) {
+            deltaY = 0;
+          } else {
+            deltaX = 0;
+          }
+        }
+
         const length = this.props.vertical
-          ? Math.round(
-              Math.sqrt(
-                Math.pow(e.touches[0].pageY - this.touchObject.startY, 2)
-              )
-            )
-          : Math.round(
-              Math.sqrt(
-                Math.pow(e.touches[0].pageX - this.touchObject.startX, 2)
-              )
-            );
+          ? Math.round(Math.sqrt(Math.pow(deltaY, 2)))
+          : Math.round(Math.sqrt(Math.pow(deltaX, 2)));
 
         this.touchObject = {
           startX: this.touchObject.startX,
           startY: this.touchObject.startY,
-          endX: e.touches[0].pageX,
-          endY: e.touches[0].pageY,
+          endX: deltaX > 0 ? e.touches[0].pageX : this.touchObject.startX,
+          endY: deltaY > 0 ? e.touches[0].pageY : this.touchObject.startY,
           length,
           direction
         };
@@ -344,13 +346,20 @@ export default class Carousel extends React.Component {
           e.preventDefault();
         }
 
+        let deltaY = e.clientY - this.touchObject.startY;
+        let deltaX = e.clientX - this.touchObject.startX;
+
+        if (this.props.easeSwiping) {
+          if (Math.abs(deltaX) >= Math.abs(deltaY)) {
+            deltaY = 0;
+          } else {
+            deltaX = 0;
+          }
+        }
+
         const length = this.props.vertical
-          ? Math.round(
-              Math.sqrt(Math.pow(e.clientY - this.touchObject.startY, 2))
-            )
-          : Math.round(
-              Math.sqrt(Math.pow(e.clientX - this.touchObject.startX, 2))
-            );
+          ? Math.round(Math.sqrt(Math.pow(deltaY, 2)))
+          : Math.round(Math.sqrt(Math.pow(deltaX, 2)));
 
         // prevents disabling click just because mouse moves a fraction of a pixel
         if (length >= 10) this.clickDisabled = true;
@@ -358,8 +367,8 @@ export default class Carousel extends React.Component {
         this.touchObject = {
           startX: this.touchObject.startX,
           startY: this.touchObject.startY,
-          endX: e.clientX,
-          endY: e.clientY,
+          endX: deltaX > 0 ? e.clientX : this.touchObject.startX,
+          endY: deltaY > 0 ? e.clientY : this.touchObject.startY,
           length,
           direction
         };
