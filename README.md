@@ -1,5 +1,16 @@
 [![Maintenance Status][maintenance-image]](#maintenance-status)
 
+# Fork changes
+
+Added an option to "Ease" touch/mouse movement. My usecase was as follows:
+I have two carousels combined: one vertical, with multiple horziontal ones as slides.
+The issue here was that when swiping horizontally, especially on touch devices, you would sometimes also swipe vertically.
+This resulted in a pretty "jumpy" experience. 
+
+The change in this fork "eases" the swipe movements, so that when it is most dominantly horizontal, vertical movement will be set to 0, and vice versa.
+
+This behaviour can be set by supplying the "easeSwiping" prop (default: false).
+
 # nuka-carousel
 
 A Pure ReactJS Carousel Component
@@ -104,6 +115,7 @@ Or on CodeSandBox at the following url: <a href="https://codesandbox.io/s/04wxlo
 | wrapAround                 | `React.PropTypes.bool`                                                                  | Sets infinite wrapAround mode.                                                                                                                                                                                                                                                              | `false`                                                                   |
 | zoomScale                  | `React.PropTypes.number`                                                                | Adds a number value to set the scale of zoom when `animation === "zoom"`. The number value should be set in a range of (0,1). The default value is set to `zoomScale: 0.85`                                                                                                                 |
 | opacityScale               | `React.PropTypes.number`                                                                | Adds a number value to set the scale of the opacity for the 'scroll3d' transition mode. The number value should be set in a range of (0,1). The default value is set to `opacityScale: 0.65`                                                                                                |
+| easeSwiping               | `React.PropTypes.bool`                                                                | Eases the swiping movement so that only the most dominant direction is used                                           | `false`
 
 #### render\*Controls
 
